@@ -1,12 +1,12 @@
 {
-    "name": "luminarix/:package_slug",
-    "description": ":package_description",
+    "name": "luminarix/laravel-jsonl-parser",
+    "description": "A JSON Lines parser for Laravel.",
     "keywords": [
         "Luminarix Labs",
         "laravel",
-        ":package_slug"
+        "laravel-jsonl-parser"
     ],
-    "homepage": "https://github.com/luminarix/:package_slug",
+    "homepage": "https://github.com/luminarix/laravel-jsonl-parser",
     "license": "MIT",
     "authors": [
         {
@@ -34,13 +34,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Luminarix\\Skeleton\\": "src/",
-            "Luminarix\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "Luminarix\\JSONL\\": "src/",
+            "Luminarix\\JSONL\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Luminarix\\Skeleton\\Tests\\": "tests/"
+            "Luminarix\\JSONL\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -59,10 +59,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Luminarix\\Skeleton\\SkeletonServiceProvider"
+                "Luminarix\\JSONL\\JSONLServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "Luminarix\\Skeleton\\Facades\\Skeleton"
+                "JSONL": "Luminarix\\JSONL\\Facades\\JSONL"
             }
         }
     },

@@ -1,6 +1,6 @@
 <?php
 
-namespace Luminarix\Skeleton\Database\Factories;
+namespace Luminarix\JSONL\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 

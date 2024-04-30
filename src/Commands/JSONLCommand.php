@@ -1,12 +1,12 @@
 <?php
 
-namespace Luminarix\Skeleton\Commands;
+namespace Luminarix\JSONL\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class JSONLCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-jsonl-parser';
 
     public $description = 'My command';
 
