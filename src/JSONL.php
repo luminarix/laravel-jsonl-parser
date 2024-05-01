@@ -10,6 +10,16 @@ use RuntimeException;
 
 class JSONL
 {
+    public function encode(array|Collection|LazyCollection $objects): string
+    {
+        return $this->encodeLines($objects);
+    }
+
+    public function encodeFromDto(array|Collection|LazyCollection $dtos): string
+    {
+        return $this->encodeLinesFromDto($dtos);
+    }
+
     public function parse(string $filePath): LazyCollection
     {
         return $this->parseLines($this->readLines($filePath));
@@ -28,43 +38,53 @@ class JSONL
         return $this->parseLinesToDto($this->readLines($filePath), $dtoClass);
     }
 
-    public function encode(array|Collection $objects): string
-    {
-        return $this->encodeLines($objects);
-    }
-
-    public function encodeFromDto(array|Collection $dtos): string
-    {
-        return $this->encodeLinesFromDto($dtos);
-    }
-
-    public function writeFromDto(string $filePath, array|Collection $dtos): void
+    public function writeFromDto(string $filePath, array|Collection|LazyCollection $dtos): void
     {
         File::put($filePath, $this->encodeFromDto($dtos));
     }
 
-    public function write(string $filePath, array|Collection $objects): void
+    public function write(string $filePath, array|Collection|LazyCollection $objects): void
     {
         File::put($filePath, $this->encode($objects));
     }
 
-    protected function readLines(string $filePath): LazyCollection
+    protected function encodeLines(array|Collection|LazyCollection $objects): string
     {
-        return LazyCollection::make(static function () use ($filePath) {
-            $handle = fopen($filePath, 'rb');
+        if (!$objects instanceof LazyCollection) {
+            $objects = LazyCollection::make($objects);
+        }
 
-            if ($handle === false) {
-                throw new RuntimeException("Failed to open file: {$filePath}");
-            }
+        return $objects
+            ->map(static function ($object) {
+                $json = json_encode($object, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
-            try {
-                while (($line = fgets($handle)) !== false) {
-                    yield Str::of($line)->trim();
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new RuntimeException('JSON encoding failed: ' . json_last_error_msg());
                 }
-            } finally {
-                fclose($handle);
-            }
-        });
+
+                return $json;
+            })
+            ->implode("\n");
+    }
+
+    protected function encodeLinesFromDto(array|Collection|LazyCollection $dtos): string
+    {
+        if (!$dtos instanceof LazyCollection) {
+            $dtos = LazyCollection::make($dtos);
+        }
+
+        return $dtos
+            ->map(static function ($dto) {
+                $data = get_object_vars($dto);
+                $json = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new RuntimeException('JSON encoding failed: ' . json_last_error_msg());
+                }
+
+                return $json;
+            })
+            ->implode("\n");
     }
 
     protected function parseLines(LazyCollection $lines): LazyCollection
@@ -97,34 +117,22 @@ class JSONL
             });
     }
 
-    protected function encodeLines(array|Collection $objects): string
+    protected function readLines(string $filePath): LazyCollection
     {
-        return LazyCollection::make($objects)
-            ->map(static function ($object) {
-                $json = json_encode($object, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        return LazyCollection::make(static function () use ($filePath) {
+            $handle = fopen($filePath, 'rb');
 
-                if (json_last_error() !== JSON_ERROR_NONE) {
-                    throw new RuntimeException('JSON encoding failed: ' . json_last_error_msg());
+            if ($handle === false) {
+                throw new RuntimeException("Failed to open file: {$filePath}");
+            }
+
+            try {
+                while (($line = fgets($handle)) !== false) {
+                    yield Str::of($line)->trim();
                 }
-
-                return $json;
-            })
-            ->implode("\n");
-    }
-
-    protected function encodeLinesFromDto(array|Collection $dtos): string
-    {
-        return LazyCollection::make($dtos)
-            ->map(static function ($dto) {
-                $data = get_object_vars($dto);
-                $json = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-
-                if (json_last_error() !== JSON_ERROR_NONE) {
-                    throw new RuntimeException('JSON encoding failed: ' . json_last_error_msg());
-                }
-
-                return $json;
-            })
-            ->implode("\n");
+            } finally {
+                fclose($handle);
+            }
+        });
     }
 }
