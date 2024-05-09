@@ -15,30 +15,19 @@ You can install the package via composer:
 composer require luminarix/laravel-jsonl-parser
 ```
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="laravel-jsonl-parser-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="laravel-jsonl-parser-config"
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="laravel-jsonl-parser-views"
-```
-
 ## Usage
 
 ```php
-$jSONL = new Luminarix\JSONL();
-echo $jSONL->echoPhrase('Hello, Luminarix!');
+use Luminarix\JSONL\Facades\JSONL;
+
+$filePath = "path/to/file.jsonl";
+
+JSONL::parse(string $filePath): LazyCollection
+JSONL::parseToDto(string $filePath, string $dtoClass): LazyCollection
+JSONL::encode(array|Collection|LazyCollection $objects): string
+JSONL::encodeFromDto(array|Collection|LazyCollection $dtos): string
+JSONL::write(string $filePath, array|Collection|LazyCollection $objects, bool $lock = false): void
+JSONL::writeFromDto(string $filePath, array|Collection|LazyCollection $dtos, bool $lock = false): void
 ```
 
 ## Testing
