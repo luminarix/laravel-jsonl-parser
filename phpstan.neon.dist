@@ -5,8 +5,9 @@ parameters:
     level: 9
     paths:
         - src
+    ignoreErrors:
+        - identifier: missingType.iterableValue
+        - identifier: missingType.generics
     tmpDir: build/phpstan
     checkOctaneCompatibility: true
     checkModelProperties: true
-    checkMissingIterableValueType: false
-    checkGenericClassInNonGenericObjectType: false
