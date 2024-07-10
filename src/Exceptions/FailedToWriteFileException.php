@@ -9,6 +9,4 @@ use Exception;
 /**
  * The exception that is thrown when a file cannot be written.
  */
-class FailedToWriteFileException extends Exception
-{
-}
+class FailedToWriteFileException extends Exception {}

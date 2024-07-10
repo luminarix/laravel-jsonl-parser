@@ -12,8 +12,7 @@ readonly class ExampleDTO
     public function __construct(
         public string $name,
         public array $wins,
-    ) {
-    }
+    ) {}
 
     public function toArray(): array
     {

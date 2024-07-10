@@ -9,6 +9,4 @@ use Exception;
 /**
  * The exception that is thrown when a JSONL row is invalid.
  */
-class InvalidRowException extends Exception
-{
-}
+class InvalidRowException extends Exception {}
