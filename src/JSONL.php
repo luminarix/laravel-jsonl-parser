@@ -91,6 +91,10 @@ class JSONL
         return $objects
             ->map(static function ($object) use ($dto) {
                 if ($dto) {
+                    if (!is_object($object)) {
+                        throw new FailedToEncodeException('DTO must be an object');
+                    }
+
                     $object = get_object_vars($object);
                 }
 
@@ -110,6 +114,7 @@ class JSONL
         return $lines
             ->reject(static fn ($line) => $line->isEmpty())
             ->map(static function ($line) use ($dtoClass) {
+                /** @var string $line */
                 $object = json_decode($line, true);
 
                 if (json_last_error() !== JSON_ERROR_NONE) {
