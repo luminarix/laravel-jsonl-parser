@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-jsonl-parser` will be documented in this file.
 
+## v1.1.1 - 2025-02-25
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 2.2.0 to 2.3.0 by @dependabot in https://github.com/luminarix/laravel-jsonl-parser/pull/2
+* Bump aglipanci/laravel-pint-action from 2.4 to 2.5 by @dependabot in https://github.com/luminarix/laravel-jsonl-parser/pull/3
+
+**Full Changelog**: https://github.com/luminarix/laravel-jsonl-parser/compare/v1.1.0...v1.1.1
+
 ## v1.1.0 - 2024-07-10
 
 ### What's Changed
